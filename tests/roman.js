@@ -15,6 +15,9 @@ QUnit.module('Тестируем функцию roman', function () {
 		assert.strictEqual(roman('MCMIV'), 1904);
 		assert.strictEqual(roman('MCMXC'), 1990);
 		assert.strictEqual(roman('mmxvii'), 2017);
+
+		// максимальное число согласно правилу Шварцмана
+		assert.strictEqual(roman('MMMCMXCIX'), 3999);
 	});
 
 	QUnit.test('roman правильно переводит из десятичной системы счисления', function (assert) {
@@ -30,11 +33,33 @@ QUnit.module('Тестируем функцию roman', function () {
 		assert.strictEqual(roman(1904), 'MCMIV');
 		assert.strictEqual(roman(1990), 'MCMXC');
 		assert.strictEqual(roman(2017), 'MMXVII');
+
+		// максимальное число согласно правилу Шварцмана
+		assert.strictEqual(roman(3999), 'MMMCMXCIX');
 	});
 
 	QUnit.test('roman правильно определяет, что было передано на вход', function (assert) {
 		assert.strictEqual(roman('1904'), 'MCMIV');
 		assert.strictEqual(roman('1990'), 'MCMXC');
 		assert.strictEqual(roman('2017'), 'MMXVII');
+	});
+
+	QUnit.test('roman бросает исключения при неверном типе переданных данных', function (assert) {
+		let val1 = new Map();
+		assert.throws(function() { roman(val); }, 'Error thrown');
+
+		assert.throws(function() { roman(['III', 'V', 'CX']); }, 'Error thrown');
+		assert.throws(function() { roman(); }, 'Error thrown');
+	});
+
+	QUnit.test('roman бросает исключения при неверных числах', function (assert) {
+		assert.throws(function() { roman('12z'); }, 'Error thrown');
+		assert.throws(function() { roman('!!!'); }, 'Error thrown');
+		assert.throws(function() { roman('MC&I'); }, 'Error thrown');
+		assert.throws(function() { roman(''); }, 'Error thrown');
+
+		// тестирование ограничений
+		assert.throws(function() { roman(-5); }, 'The number is less than the minimum');
+		assert.throws(function() { roman(123456); }, 'The number is greater than the maximum');
 	});
 });
