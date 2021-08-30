@@ -45,19 +45,20 @@ QUnit.module('Тестируем функцию roman', function () {
 	});
 
 	QUnit.test('roman бросает исключения при неверном типе переданных данных', function (assert) {
-		assert.throws(function() { roman(['III', 'V', 'CX']); }, 'Error thrown');
-		assert.throws(function() { roman([111]); }, 'Error thrown');
-		assert.throws(function() { roman(); }, 'Error thrown');
+		assert.throws(function() { roman(['III', 'V', 'CX']); }, /Type of input should be string or number!/,  'Error thrown');
+		assert.throws(function() { roman([111]); }, /Type of input should be string or number!/, 'Error thrown');
+		assert.throws(function() { roman(); }, /Type of input should be string or number!/, 'Error thrown');
 	});
 
 	QUnit.test('roman бросает исключения при неверных числах', function (assert) {
-		assert.throws(function() { roman('12z'); }, 'Error thrown');
-		assert.throws(function() { roman('!!!'); }, 'Error thrown');
-		assert.throws(function() { roman('MC&I'); }, 'Error thrown');
-		assert.throws(function() { roman(''); }, 'Error thrown');
+		assert.throws(function() { roman('12z'); }, /Invalid character at 1 position!/, 'Error thrown');
+		assert.throws(function() { roman('!!!'); }, /Invalid character at 1 position!/, 'Error thrown');
+		assert.throws(function() { roman('MC&I'); }, /Invalid character at 3 position!/, 'Error thrown');
+		assert.throws(function() { roman('CXIq'); }, /Invalid character at 4 position!/, 'Error thrown');
+		assert.throws(function() { roman(''); }, /Invalid number!/, 'Error thrown');
 
 		// тестирование ограничений
-		assert.throws(function() { roman(-5); }, 'The number is less than the minimum');
-		assert.throws(function() { roman(123456); }, 'The number is greater than the maximum');
+		assert.throws(function() { roman(-5); }, /Invalid number!/, 'The number is less than the minimum');
+		assert.throws(function() { roman(123456); }, /Invalid number!/, 'The number is greater than the maximum');
 	});
 });

@@ -32,8 +32,8 @@ const romanToArabic = (num) => {
             throw new SyntaxError(`Invalid character at ${i + 1} position!`);
         }
 
-        const cur_num = rom2arab.get(num[i - 1]);
-        result += cur_num < rom2arab.get(num[i]) ? -cur_num : cur_num;
+        const curNum = rom2arab.get(num[i - 1]);
+        result += curNum < rom2arab.get(num[i]) ? -curNum : curNum;
     }
     return result + rom2arab.get(num[num.length - 1]);
 }
