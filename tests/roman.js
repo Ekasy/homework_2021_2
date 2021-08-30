@@ -45,10 +45,8 @@ QUnit.module('Тестируем функцию roman', function () {
 	});
 
 	QUnit.test('roman бросает исключения при неверном типе переданных данных', function (assert) {
-		let val1 = new Map();
-		assert.throws(function() { roman(val); }, 'Error thrown');
-
 		assert.throws(function() { roman(['III', 'V', 'CX']); }, 'Error thrown');
+		assert.throws(function() { roman([111]); }, 'Error thrown');
 		assert.throws(function() { roman(); }, 'Error thrown');
 	});
 

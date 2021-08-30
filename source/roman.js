@@ -1,8 +1,14 @@
 'use strict';
 
 
+/**
+ * Перевод римского числа в десятичное.
+ * @function romanToArabic
+ * @param {string} num - Римское число
+ * @returns {number} - Десятичное число
+ */
 const romanToArabic = (num) => {
-    if (typeof num != 'string') {
+    if (typeof num !== 'string') {
         throw new TypeError('Type of num should be string!');
     }
 
@@ -18,27 +24,29 @@ const romanToArabic = (num) => {
         ['M', 1000] 
     ]);
     let result = 0;
-    if (!rom2arab.has(num[0].toUpperCase())) {
+    if (!rom2arab.has(num[0])) {
         throw new SyntaxError('Invalid character at 1 position!');
     }
     for (let i = 1; i < num.length; ++i) {
         if (!rom2arab.has(num[i])) {
-            throw new SyntaxError('Invalid character at ${i + 1} position!');
+            throw new SyntaxError(`Invalid character at ${i + 1} position!`);
         }
 
-        if (rom2arab.get(num[i - 1]) < rom2arab.get(num[i])) {
-            result -= rom2arab.get(num[i - 1]);
-        }
-        else {
-            result = result + rom2arab.get(num[i - 1]);
-        }
+        const cur_num = rom2arab.get(num[i - 1]);
+        result += cur_num < rom2arab.get(num[i]) ? -cur_num : cur_num;
     }
     return result + rom2arab.get(num[num.length - 1]);
 }
 
 
+/**
+ * Перевод десятичного числа в римское.
+ * @function romanToArabic
+ * @param {num} num - Десятичное число
+ * @returns {string} - Римское число
+ */
 const arabicToRoman = (num) => {
-    if (typeof num != 'number') {
+    if (typeof num !== 'number') {
         throw new TypeError('Type of num should be number!');
     }
 
@@ -63,11 +71,11 @@ const arabicToRoman = (num) => {
         [4,    'IV'],
         [1,    'I']
     ]);
-    let count = 0;
+    
     let result = '';
 
-    arab2rom.forEach((value, key, map) => {
-        count = Math.floor(num / key);
+    arab2rom.forEach((value, key) => {
+        const count = Math.floor(num / key);
         for (let i = 0; i < count; ++i) {
             result += value;
         }
@@ -78,8 +86,14 @@ const arabicToRoman = (num) => {
 }
 
 
+/**
+ * Делегирует перевод чисел из десятичного (римского) формата в римский (десятичный).
+ * @function roman
+ * @param {(string|number)} input - Римское|десятичное число
+ * @returns {(number|string)} - Десятичное|римское число
+ */
 const roman = (input) => {
-    if (typeof input == 'string') {
+    if (typeof input === 'string') {
         if (isNaN(Number(input))) {
             return romanToArabic(input);
         }
@@ -87,7 +101,7 @@ const roman = (input) => {
             return arabicToRoman(Number(input));
         }
     }
-    else if (typeof input == 'number') {
+    else if (typeof input === 'number') {
         return arabicToRoman(input);
     }
     else {
